@@ -445,7 +445,9 @@ with tab3:
 # ══════════════════════════════════════════════════════════════
 # TAB 4 — GIORNALIERO
 # ══════════════════════════════════════════════════════════════
+
 with tab4:
+
     st.markdown("### Dettaglio Giornaliero per Filiale")
 
     fil_giorno = st.selectbox(
@@ -470,68 +472,112 @@ with tab4:
 
         giri_day = giornate_g[date_sel]
 
-        # KPI giornata
-        lv_af_g  = sum(v.get("lv_af",0) for v in giri_day.values())
-        lv_ok_g  = sum(v.get("lv_ok",0) for v in giri_day.values())
-        lv_rit_g = sum(v.get("lv_rit",0) for v in giri_day.values())
-        stop_ok  = sum(v.get("stop_ok",0) for v in giri_day.values())
+        lv_af_g = sum(
+            v.get("lv_af",0)
+            for v in giri_day.values()
+        )
+
+        lv_ok_g = sum(
+            v.get("lv_ok",0)
+            for v in giri_day.values()
+        )
+
+        lv_rit_g = sum(
+            v.get("lv_rit",0)
+            for v in giri_day.values()
+        )
+
+        stop_ok = sum(
+            v.get("stop_ok",0)
+            for v in giri_day.values()
+        )
+
+        stop_rit = sum(
+            v.get("stop_rit",0)
+            for v in giri_day.values()
+        )
 
         tot_ldv = lv_ok_g + lv_rit_g
+
         n_giri = len(giri_day)
-        prod_media = tot_ldv / n_giri if n_giri > 0 else 0
 
-        rdc = (lv_ok_g / lv_af_g * 100) if lv_af_g > 0 else 0
+        prod_media = (
+            tot_ldv / n_giri
+            if n_giri > 0
+            else 0
+        )
 
-        c1, c2, c3, c4, c5, c6, c7 = st.columns(7)
+        rdc = (
+            lv_ok_g / lv_af_g *100
+            if lv_af_g >0
+            else 0
+        )
+
+        perc_rit = (
+            lv_rit_g / tot_ldv *100
+            if tot_ldv >0
+            else 0
+        )
+
+        # KPI CONSEGNE
+
+        st.markdown("## 📦 KPI CONSEGNE")
+
+        c1,c2,c3,c4,c5 = st.columns(5)
 
         with c1:
-            kpi_card("LV Affidate", fmt_n(lv_af_g), "#3b82f6")
+            kpi_card(
+                "LV Affidate",
+                fmt_n(lv_af_g),
+                "#3b82f6"
+            )
 
         with c2:
-            kpi_card("LV Ok", fmt_n(lv_ok_g), "#22c55e")
+            kpi_card(
+                "LV OK",
+                fmt_n(lv_ok_g),
+                "#22c55e"
+            )
 
         with c3:
-            kpi_card("LV Ritiro", fmt_n(lv_rit_g), "#a855f7")
+            kpi_card(
+                "Volume Totale",
+                fmt_n(tot_ldv),
+                "#94a3b8"
+            )
 
         with c4:
-            kpi_card("Stop Ok", fmt_n(stop_ok), "#14b8a6")
+            kpi_card(
+                "Prod.Media",
+                f"{prod_media:.1f}",
+                "#f59e0b"
+            )
 
         with c5:
-            kpi_card("Volume Totale LDV", fmt_n(tot_ldv), "#94a3b8")
-
-        with c6:
-            kpi_card("Prod. Media", f"{prod_media:.1f}", "#f59e0b")
-
-        with c7:
-            kpi_card("RDC", f"{rdc:.1f}%", "#ef4444")
+            kpi_card(
+                "RDC",
+                f"{rdc:.1f}%",
+                "#ef4444"
+            )
 
         st.markdown("---")
 
-        righe_giorno = []
+        # RDC PER GIRO
 
-        for g, v in sorted(giri_day.items()):
-            righe_giorno.append({
-                "Giro": g,
-                "LV AFF": int(v.get("lv_af",0)),
-                "LV OK": int(v.get("lv_ok",0)),
-                "LV RIT": int(v.get("lv_rit",0)),
-                "STOP OK": int(v.get("stop_ok",0)),
-                "STOP RIT": int(v.get("stop_rit",0)),
-                "Produttività (LV OK + RIT)": int(v.get("ldv_tot",0)),
-            })
-
-        st.markdown("#### Classifica RDC per Giro")
+        st.markdown(
+            "#### Classifica RDC per Giro"
+        )
 
         righe_rdc=[]
 
-        for g, v in giri_day.items():
+        for g,v in giri_day.items():
 
             lv_af = int(v.get("lv_af",0))
             lv_ok = int(v.get("lv_ok",0))
 
             rdc_giro = (
-                (lv_ok / lv_af) * 100
-                if lv_af > 0
+                (lv_ok/lv_af)*100
+                if lv_af>0
                 else 0
             )
 
@@ -542,7 +588,9 @@ with tab4:
 
             })
 
-        df_rdc = pd.DataFrame(righe_rdc)
+        df_rdc = pd.DataFrame(
+            righe_rdc
+        )
 
         df_rdc = df_rdc.sort_values(
             by="RDC",
@@ -555,40 +603,40 @@ with tab4:
 
             go.Bar(
 
-    y=[
-        f"Giro {g}"
-        for g in df_rdc["Giro"]
-    ],
+                y=[
+                    f"Giro {g}"
+                    for g in df_rdc["Giro"]
+                ],
 
-    x=df_rdc["RDC"],
+                x=df_rdc["RDC"],
 
-    orientation="h",
+                orientation="h",
 
-    text=[
-        f"{x:.1f}%"
-        for x in df_rdc["RDC"]
-    ],
+                text=[
+                    f"{x:.1f}%"
+                    for x in df_rdc["RDC"]
+                ],
 
-    textposition="inside",
+                textposition="inside",
 
-    insidetextanchor="middle",
+                insidetextanchor="middle",
 
-    textfont=dict(
-        color="white",
-        size=12
-    ),
+                textfont=dict(
+                    color="white",
+                    size=12
+                ),
 
-    marker_color=[
+                marker_color=[
 
-        "#00C853" if x >= 97
-        else "#FFD600" if x >= 94
-        else "#FF3D00"
+                    "#00C853" if x>=97
+                    else "#FFD600" if x>=94
+                    else "#FF3D00"
 
-        for x in df_rdc["RDC"]
+                    for x in df_rdc["RDC"]
 
-    ]
+                ]
 
-)
+            )
 
         )
 
@@ -618,7 +666,47 @@ with tab4:
             use_container_width=True
         )
 
+        st.markdown("---")
+
+        # KPI RITIRI
+
+        st.markdown("## 🚚 KPI RITIRI")
+
+        c1,c2,c3 = st.columns(3)
+
+        with c1:
+            kpi_card(
+                "LV Ritiro",
+                fmt_n(lv_rit_g),
+                "#a855f7"
+            )
+
+        with c2:
+            kpi_card(
+                "Stop Ritiro",
+                fmt_n(stop_rit),
+                "#14b8a6"
+            )
+
+        with c3:
+            kpi_card(
+                "% Ritiri",
+                f"{perc_rit:.1f}%",
+                "#f59e0b"
+            )
+
+        st.markdown("---")
+
+        # KPI NPS
+
+        st.markdown("## ⭐ KPI NPS")
+
+        st.info(
+            "In attesa collegamento file NPS"
+        )
+
     else:
+
         st.warning(
             "Nessun dato disponibile nel periodo selezionato."
         )
