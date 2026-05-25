@@ -555,33 +555,40 @@ with tab4:
 
             go.Bar(
 
-                y=[
-                    f"Giro {g}"
-                    for g in df_rdc["Giro"]
-                ],
+    y=[
+        f"Giro {g}"
+        for g in df_rdc["Giro"]
+    ],
 
-                x=df_rdc["RDC"],
+    x=df_rdc["RDC"],
 
-                orientation="h",
+    orientation="h",
 
-                text=[
-                    f"{x:.1f}%"
-                    for x in df_rdc["RDC"]
-                ],
+    text=[
+        f"{x:.1f}%"
+        for x in df_rdc["RDC"]
+    ],
 
-                textposition="outside",
+    textposition="inside",
 
-                marker_color=[
+    insidetextanchor="middle",
 
-                    "#00C853" if x >= 97
-                    else "#FFD600" if x >= 94
-                    else "#FF3D00"
+    textfont=dict(
+        color="white",
+        size=12
+    ),
 
-                    for x in df_rdc["RDC"]
+    marker_color=[
 
-                ]
+        "#00C853" if x >= 97
+        else "#FFD600" if x >= 94
+        else "#FF3D00"
 
-            )
+        for x in df_rdc["RDC"]
+
+    ]
+
+)
 
         )
 
