@@ -506,211 +506,176 @@ with tab4:
 
         giri_day = giornate_g[date_sel]
 
-        lv_af_g = sum(
-            v.get("lv_af",0)
-            for v in giri_day.values()
-        )
-
-        lv_ok_g = sum(
-            v.get("lv_ok",0)
-            for v in giri_day.values()
-        )
-
-        lv_rit_g = sum(
-            v.get("lv_rit",0)
-            for v in giri_day.values()
-        )
-
-        stop_ok = sum(
-            v.get("stop_ok",0)
-            for v in giri_day.values()
-        )
-
-        stop_rit = sum(
-            v.get("stop_rit",0)
-            for v in giri_day.values()
-        )
+        lv_af_g = sum(v.get("lv_af",0) for v in giri_day.values())
+        lv_ok_g = sum(v.get("lv_ok",0) for v in giri_day.values())
+        lv_rit_g = sum(v.get("lv_rit",0) for v in giri_day.values())
+        stop_ok = sum(v.get("stop_ok",0) for v in giri_day.values())
+        stop_rit = sum(v.get("stop_rit",0) for v in giri_day.values())
 
         tot_ldv = lv_ok_g + lv_rit_g
-
         n_giri = len(giri_day)
 
         prod_media = (
             tot_ldv / n_giri
-            if n_giri > 0
-            else 0
+            if n_giri > 0 else 0
         )
 
         rdc = (
-            lv_ok_g / lv_af_g *100
-            if lv_af_g >0
-            else 0
+            lv_ok_g / lv_af_g * 100
+            if lv_af_g > 0 else 0
         )
 
         perc_rit = (
-            lv_rit_g / tot_ldv *100
-            if tot_ldv >0
-            else 0
+            lv_rit_g / tot_ldv * 100
+            if tot_ldv > 0 else 0
+        )
+
+        righe_rdc=[]
+
+        for g,v in giri_day.items():
+
+            lv_af = int(v.get("lv_af",0))
+            lv_ok = int(v.get("lv_ok",0))
+
+            rdc_giro = (
+                (lv_ok/lv_af)*100
+                if lv_af>0
+                else 0
+            )
+
+            righe_rdc.append({
+                "Giro":g,
+                "RDC":rdc_giro
+            })
+
+        df_rdc=pd.DataFrame(righe_rdc)
+
+        df_rdc=df_rdc.sort_values(
+            by="RDC",
+            ascending=False
         )
 
         # KPI CONSEGNE
-if kpi_menu == "📦 Consegne":
+        if kpi_menu == "📦 Consegne":
 
-    st.markdown(
-        '<a id="kpi-consegne"></a>',
-        unsafe_allow_html=True
-    )
+            st.markdown("## 📦 KPI CONSEGNE")
 
-    st.markdown("## 📦 KPI CONSEGNE")
+            c1,c2,c3,c4,c5 = st.columns(5)
 
-    c1,c2,c3,c4,c5 = st.columns(5)
+            with c1:
+                kpi_card("LV Affidate",fmt_n(lv_af_g),"#3b82f6")
 
-    with c1:
-        kpi_card(
-            "LV Affidate",
-            fmt_n(lv_af_g),
-            "#3b82f6"
-        )
+            with c2:
+                kpi_card("LV OK",fmt_n(lv_ok_g),"#22c55e")
 
-    with c2:
-        kpi_card(
-            "LV OK",
-            fmt_n(lv_ok_g),
-            "#22c55e"
-        )
+            with c3:
+                kpi_card("Volume Totale",fmt_n(tot_ldv),"#94a3b8")
 
-    with c3:
-        kpi_card(
-            "Volume Totale",
-            fmt_n(tot_ldv),
-            "#94a3b8"
-        )
+            with c4:
+                kpi_card("Prod.Media",f"{prod_media:.1f}","#f59e0b")
 
-    with c4:
-        kpi_card(
-            "Prod.Media",
-            f"{prod_media:.1f}",
-            "#f59e0b"
-        )
+            with c5:
+                kpi_card("RDC",f"{rdc:.1f}%","#ef4444")
 
-    with c5:
-        kpi_card(
-            "RDC",
-            f"{rdc:.1f}%",
-            "#ef4444"
-        )
+            st.markdown("---")
 
-    st.markdown("---")
-
-    st.markdown(
-        "#### Classifica RDC per Giro"
-    )
-
-    fig_day = go.Figure()
-
-    fig_day.add_trace(
-        go.Bar(
-            y=[
-                f"Giro {g}"
-                for g in df_rdc["Giro"]
-            ],
-
-            x=df_rdc["RDC"],
-
-            orientation="h",
-
-            text=[
-                f"{x:.1f}%"
-                for x in df_rdc["RDC"]
-            ],
-
-            textposition="inside",
-
-            insidetextanchor="middle",
-
-            textfont=dict(
-                color="white",
-                size=12
-            ),
-
-            marker_color=[
-
-                "#00C853" if x>=97
-                else "#FFD600" if x>=94
-                else "#FF3D00"
-
-                for x in df_rdc["RDC"]
-
-            ]
-        )
-    )
-
-    fig_day.update_layout(
-        **LAYOUT_DARK,
-        height=max(
-            250,
-            len(df_rdc)*30
-        ),
-        xaxis=dict(
-            title="RDC %",
-            range=[0,100]
-        ),
-        yaxis=dict(
-            autorange="reversed"
-        )
-    )
-
-    st.plotly_chart(
-        fig_day,
-        use_container_width=True
-    )
-        st.markdown("---")
-
-        # KPI RITIRI
-
-        st.markdown(
-            '<a id="kpi-ritiri"></a>',
-            unsafe_allow_html=True
-        )
-        
-        st.markdown("## 🚚 KPI RITIRI")
-        c1,c2,c3 = st.columns(3)
-
-        with c1:
-            kpi_card(
-                "LV Ritiro",
-                fmt_n(lv_rit_g),
-                "#a855f7"
+            st.markdown(
+                "#### Classifica RDC per Giro"
             )
 
-        with c2:
-            kpi_card(
-                "Stop Ritiro",
-                fmt_n(stop_rit),
-                "#14b8a6"
+            fig_day=go.Figure()
+
+            fig_day.add_trace(
+
+                go.Bar(
+
+                    y=[
+                        f"Giro {g}"
+                        for g in df_rdc["Giro"]
+                    ],
+
+                    x=df_rdc["RDC"],
+
+                    orientation="h",
+
+                    text=[
+                        f"{x:.1f}%"
+                        for x in df_rdc["RDC"]
+                    ],
+
+                    textposition="inside",
+                    insidetextanchor="middle",
+
+                    textfont=dict(
+                        color="white",
+                        size=12
+                    ),
+
+                    marker_color=[
+
+                        "#00C853" if x>=97
+                        else "#FFD600" if x>=94
+                        else "#FF3D00"
+
+                        for x in df_rdc["RDC"]
+                    ]
+                )
             )
 
-        with c3:
-            kpi_card(
-                "% Ritiri",
-                f"{perc_rit:.1f}%",
-                "#f59e0b"
+            fig_day.update_layout(
+                **LAYOUT_DARK,
+                height=max(
+                    250,
+                    len(df_rdc)*30
+                ),
+                xaxis=dict(
+                    title="RDC %",
+                    range=[0,100]
+                ),
+                yaxis=dict(
+                    autorange="reversed"
+                )
             )
 
-        st.markdown("---")
+            st.plotly_chart(
+                fig_day,
+                use_container_width=True
+            )
 
-        # KPI NPS
+        elif kpi_menu == "🚚 Ritiri":
 
-        st.markdown(
-            '<a id="kpi-nps"></a>',
-            unsafe_allow_html=True
-        )
-        
-        st.markdown("## ⭐ KPI NPS")
+            st.markdown("## 🚚 KPI RITIRI")
 
-        st.info(
-            "In attesa collegamento file NPS"
-        )
+            c1,c2,c3=st.columns(3)
+
+            with c1:
+                kpi_card(
+                    "LV Ritiro",
+                    fmt_n(lv_rit_g),
+                    "#a855f7"
+                )
+
+            with c2:
+                kpi_card(
+                    "Stop Ritiro",
+                    fmt_n(stop_rit),
+                    "#14b8a6"
+                )
+
+            with c3:
+                kpi_card(
+                    "% Ritiri",
+                    f"{perc_rit:.1f}%",
+                    "#f59e0b"
+                )
+
+        elif kpi_menu == "⭐ NPS":
+
+            st.markdown("## ⭐ KPI NPS")
+
+            st.info(
+                "In attesa collegamento file NPS"
+            )
 
     else:
 
