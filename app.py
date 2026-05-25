@@ -155,13 +155,35 @@ if "dati"    not in st.session_state: st.session_state.dati    = None
 if "date_da" not in st.session_state: st.session_state.date_da = None
 if "date_a"  not in st.session_state: st.session_state.date_a  = None
 
-# ── SIDEBAR ───────────────────────────────────────────────────
+# ── SIDEBAR ─────────────────────────────────────
+
 with st.sidebar:
-    st.markdown("## 📦 Dashboard Performance")
-    progetto_attivo = st.secrets.get("PROGETTO", "—")
-    st.markdown(f"🗂 **Progetto:** `{progetto_attivo}`")
+
+    st.markdown("# 📦 Dashboard Performance")
+
+    progetto_attivo = st.secrets.get(
+        "PROGETTO",
+        "--"
+    )
+
+    st.markdown(
+        f"📂 **Progetto:** {progetto_attivo}"
+    )
+
     st.markdown("---")
 
+    st.markdown("## 📊 KPI")
+
+    kpi_menu = st.radio(
+        "",
+        [
+            "📦 Consegne",
+            "🚚 Ritiri",
+            "⭐ NPS"
+        ]
+    )
+
+    st.markdown("---")
 # ── SEZIONE IMPORTA DATI ──
 st.markdown("### 📥 Importa Dati")
 st.caption("Carica un file Excel: i dati vengono accodati a quelli esistenti su Supabase.")
