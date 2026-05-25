@@ -520,7 +520,7 @@ with tab4:
                 "Produttività (LV OK + RIT)": int(v.get("ldv_tot",0)),
             })
 
-               st.markdown("#### Classifica RDC per Giro")
+        st.markdown("#### Classifica RDC per Giro")
 
         righe_rdc=[]
 
