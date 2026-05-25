@@ -538,7 +538,7 @@ with tab4:
             unsafe_allow_html=True
         )
         
-        st.markdown("## 📦 KPI CONSEGNE"))
+        st.markdown("## 📦 KPI CONSEGNE")
 
         c1,c2,c3,c4,c5 = st.columns(5)
 
