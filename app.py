@@ -482,28 +482,97 @@ with tab4:
 
         rdc = (lv_ok_g / lv_af_g * 100) if lv_af_g > 0 else 0
 
-        c1, c2, c3, c4, c5, c6, c7 = st.columns(7)
+       tab_cons, tab_rit, tab_nps = st.tabs([
 
-        with c1:
-            kpi_card("LV Affidate", fmt_n(lv_af_g), "#3b82f6")
+    "📦 KPI CONSEGNE",
+    "🚚 KPI RITIRI",
+    "⭐ KPI NPS"
 
-        with c2:
-            kpi_card("LV Ok", fmt_n(lv_ok_g), "#22c55e")
+])
 
-        with c3:
-            kpi_card("LV Ritiro", fmt_n(lv_rit_g), "#a855f7")
+with tab_cons:
 
-        with c4:
-            kpi_card("Stop Ok", fmt_n(stop_ok), "#14b8a6")
+    c1,c2,c3,c4,c5 = st.columns(5)
 
-        with c5:
-            kpi_card("Volume Totale LDV", fmt_n(tot_ldv), "#94a3b8")
+    with c1:
+        kpi_card(
+            "LV Affidate",
+            fmt_n(lv_af_g),
+            "#3b82f6"
+        )
 
-        with c6:
-            kpi_card("Prod. Media", f"{prod_media:.1f}", "#f59e0b")
+    with c2:
+        kpi_card(
+            "LV OK",
+            fmt_n(lv_ok_g),
+            "#22c55e"
+        )
 
-        with c7:
-            kpi_card("RDC", f"{rdc:.1f}%", "#ef4444")
+    with c3:
+        kpi_card(
+            "Volume Totale",
+            fmt_n(tot_ldv),
+            "#94a3b8"
+        )
+
+    with c4:
+        kpi_card(
+            "Prod.Media",
+            f"{prod_media:.1f}",
+            "#f59e0b"
+        )
+
+    with c5:
+        kpi_card(
+            "RDC",
+            f"{rdc:.1f}%",
+            "#ef4444"
+        )
+
+
+with tab_rit:
+
+    stop_rit = sum(
+        v.get("stop_rit",0)
+        for v in giri_day.values()
+    )
+
+    perc_rit = (
+        lv_rit_g /
+        tot_ldv *100
+        if tot_ldv>0
+        else 0
+    )
+
+    c1,c2,c3 = st.columns(3)
+
+    with c1:
+        kpi_card(
+            "LV Ritiro",
+            fmt_n(lv_rit_g),
+            "#a855f7"
+        )
+
+    with c2:
+        kpi_card(
+            "Stop Ritiro",
+            fmt_n(stop_rit),
+            "#14b8a6"
+        )
+
+    with c3:
+        kpi_card(
+            "% Ritiri",
+            f"{perc_rit:.1f}%",
+            "#f59e0b"
+        )
+
+
+with tab_nps:
+
+    st.info(
+        "KPI NPS in costruzione"
+    )
 
         st.markdown("---")
 
