@@ -522,89 +522,88 @@ with tab4:
 
         st.markdown("#### Classifica RDC per Giro")
 
-righe_rdc=[]
+        righe_rdc=[]
 
-for g, v in giri_day.items():
+        for g, v in giri_day.items():
 
-    lv_af = int(v.get("lv_af",0))
-    lv_ok = int(v.get("lv_ok",0))
+            lv_af = int(v.get("lv_af",0))
+            lv_ok = int(v.get("lv_ok",0))
 
-    rdc_giro = (
-        (lv_ok / lv_af) * 100
-        if lv_af > 0
-        else 0
-    )
+            rdc_giro = (
+                (lv_ok / lv_af) * 100
+                if lv_af > 0
+                else 0
+            )
 
-    righe_rdc.append({
+            righe_rdc.append({
 
-        "Giro":g,
-        "RDC":rdc_giro
+                "Giro":g,
+                "RDC":rdc_giro
 
-    })
+            })
 
-df_rdc = pd.DataFrame(righe_rdc)
+        df_rdc = pd.DataFrame(righe_rdc)
 
-df_rdc = df_rdc.sort_values(
-    by="RDC",
-    ascending=False
-)
+        df_rdc = df_rdc.sort_values(
+            by="RDC",
+            ascending=False
+        )
 
-fig_day = go.Figure()
+        fig_day = go.Figure()
 
-fig_day.add_trace(
+        fig_day.add_trace(
 
-    go.Bar(
+            go.Bar(
 
-        y=[
-            f"Giro {g}"
-            for g in df_rdc["Giro"]
-        ],
+                y=[
+                    f"Giro {g}"
+                    for g in df_rdc["Giro"]
+                ],
 
-        x=df_rdc["RDC"],
+                x=df_rdc["RDC"],
 
-        orientation="h",
+                orientation="h",
 
-        text=[
-            f"{x:.1f}%"
-            for x in df_rdc["RDC"]
-        ],
+                text=[
+                    f"{x:.1f}%"
+                    for x in df_rdc["RDC"]
+                ],
 
-        textposition="outside",
+                textposition="outside",
 
-        marker_color=df_rdc["RDC"],
+                marker_color=df_rdc["RDC"],
 
-        marker_colorscale="RdYlGn"
+                marker_colorscale="RdYlGn"
 
-    )
+            )
 
-)
+        )
 
-fig_day.update_layout(
+        fig_day.update_layout(
 
-    **LAYOUT_DARK,
+            **LAYOUT_DARK,
 
-    height=max(
-        250,
-        len(df_rdc)*30
-    ),
+            height=max(
+                250,
+                len(df_rdc)*30
+            ),
 
-    xaxis=dict(
-        title="RDC %",
-        range=[0,100],
-        gridcolor="#2a3045"
-    ),
+            xaxis=dict(
+                title="RDC %",
+                range=[0,100],
+                gridcolor="#2a3045"
+            ),
 
-    yaxis=dict(
-        autorange="reversed"
-    )
+            yaxis=dict(
+                autorange="reversed"
+            )
 
-)
+        )
 
         st.plotly_chart(
             fig_day,
             use_container_width=True
         )
-
         st.dataframe(
             pd.DataFrame(righe_giorno),
             use_container_width=True,
