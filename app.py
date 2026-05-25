@@ -520,7 +520,7 @@ with tab4:
                 "Produttività (LV OK + RIT)": int(v.get("ldv_tot",0)),
             })
 
-        st.markdown("#### Classifica RDC per Giro")
+               st.markdown("#### Classifica RDC per Giro")
 
         righe_rdc=[]
 
@@ -571,9 +571,15 @@ with tab4:
 
                 textposition="outside",
 
-                marker_color=df_rdc["RDC"],
+                marker_color=[
 
-                marker_colorscale="RdYlGn"
+                    "#00C853" if x >= 97
+                    else "#FFD600" if x >= 94
+                    else "#FF3D00"
+
+                    for x in df_rdc["RDC"]
+
+                ]
 
             )
 
@@ -603,11 +609,6 @@ with tab4:
         st.plotly_chart(
             fig_day,
             use_container_width=True
-        )
-        st.dataframe(
-            pd.DataFrame(righe_giorno),
-            use_container_width=True,
-            hide_index=True
         )
 
     else:
