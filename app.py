@@ -554,157 +554,116 @@ with tab4:
         )
 
         # KPI CONSEGNE
+if kpi_menu == "📦 Consegne":
 
-        st.markdown(
-            '<a id="kpi-consegne"></a>',
-            unsafe_allow_html=True
-        )
-        
-        st.markdown("## 📦 KPI CONSEGNE")
+    st.markdown(
+        '<a id="kpi-consegne"></a>',
+        unsafe_allow_html=True
+    )
 
-        c1,c2,c3,c4,c5 = st.columns(5)
+    st.markdown("## 📦 KPI CONSEGNE")
 
-        with c1:
-            kpi_card(
-                "LV Affidate",
-                fmt_n(lv_af_g),
-                "#3b82f6"
-            )
+    c1,c2,c3,c4,c5 = st.columns(5)
 
-        with c2:
-            kpi_card(
-                "LV OK",
-                fmt_n(lv_ok_g),
-                "#22c55e"
-            )
-
-        with c3:
-            kpi_card(
-                "Volume Totale",
-                fmt_n(tot_ldv),
-                "#94a3b8"
-            )
-
-        with c4:
-            kpi_card(
-                "Prod.Media",
-                f"{prod_media:.1f}",
-                "#f59e0b"
-            )
-
-        with c5:
-            kpi_card(
-                "RDC",
-                f"{rdc:.1f}%",
-                "#ef4444"
-            )
-
-        st.markdown("---")
-
-        # RDC PER GIRO
-
-        st.markdown(
-            "#### Classifica RDC per Giro"
+    with c1:
+        kpi_card(
+            "LV Affidate",
+            fmt_n(lv_af_g),
+            "#3b82f6"
         )
 
-        righe_rdc=[]
-
-        for g,v in giri_day.items():
-
-            lv_af = int(v.get("lv_af",0))
-            lv_ok = int(v.get("lv_ok",0))
-
-            rdc_giro = (
-                (lv_ok/lv_af)*100
-                if lv_af>0
-                else 0
-            )
-
-            righe_rdc.append({
-
-                "Giro":g,
-                "RDC":rdc_giro
-
-            })
-
-        df_rdc = pd.DataFrame(
-            righe_rdc
+    with c2:
+        kpi_card(
+            "LV OK",
+            fmt_n(lv_ok_g),
+            "#22c55e"
         )
 
-        df_rdc = df_rdc.sort_values(
-            by="RDC",
-            ascending=False
+    with c3:
+        kpi_card(
+            "Volume Totale",
+            fmt_n(tot_ldv),
+            "#94a3b8"
         )
 
-        fig_day = go.Figure()
-
-        fig_day.add_trace(
-
-            go.Bar(
-
-                y=[
-                    f"Giro {g}"
-                    for g in df_rdc["Giro"]
-                ],
-
-                x=df_rdc["RDC"],
-
-                orientation="h",
-
-                text=[
-                    f"{x:.1f}%"
-                    for x in df_rdc["RDC"]
-                ],
-
-                textposition="inside",
-
-                insidetextanchor="middle",
-
-                textfont=dict(
-                    color="white",
-                    size=12
-                ),
-
-                marker_color=[
-
-                    "#00C853" if x>=97
-                    else "#FFD600" if x>=94
-                    else "#FF3D00"
-
-                    for x in df_rdc["RDC"]
-
-                ]
-
-            )
-
+    with c4:
+        kpi_card(
+            "Prod.Media",
+            f"{prod_media:.1f}",
+            "#f59e0b"
         )
 
-        fig_day.update_layout(
+    with c5:
+        kpi_card(
+            "RDC",
+            f"{rdc:.1f}%",
+            "#ef4444"
+        )
 
-            **LAYOUT_DARK,
+    st.markdown("---")
 
-            height=max(
-                250,
-                len(df_rdc)*30
+    st.markdown(
+        "#### Classifica RDC per Giro"
+    )
+
+    fig_day = go.Figure()
+
+    fig_day.add_trace(
+        go.Bar(
+            y=[
+                f"Giro {g}"
+                for g in df_rdc["Giro"]
+            ],
+
+            x=df_rdc["RDC"],
+
+            orientation="h",
+
+            text=[
+                f"{x:.1f}%"
+                for x in df_rdc["RDC"]
+            ],
+
+            textposition="inside",
+
+            insidetextanchor="middle",
+
+            textfont=dict(
+                color="white",
+                size=12
             ),
 
-            xaxis=dict(
-                title="RDC %",
-                range=[0,100],
-                gridcolor="#2a3045"
-            ),
+            marker_color=[
 
-            yaxis=dict(
-                autorange="reversed"
-            )
+                "#00C853" if x>=97
+                else "#FFD600" if x>=94
+                else "#FF3D00"
 
+                for x in df_rdc["RDC"]
+
+            ]
         )
+    )
 
-        st.plotly_chart(
-            fig_day,
-            use_container_width=True
+    fig_day.update_layout(
+        **LAYOUT_DARK,
+        height=max(
+            250,
+            len(df_rdc)*30
+        ),
+        xaxis=dict(
+            title="RDC %",
+            range=[0,100]
+        ),
+        yaxis=dict(
+            autorange="reversed"
         )
+    )
 
+    st.plotly_chart(
+        fig_day,
+        use_container_width=True
+    )
         st.markdown("---")
 
         # KPI RITIRI
