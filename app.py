@@ -600,10 +600,10 @@ fig_day.update_layout(
 
 )
 
-st.plotly_chart(
-    fig_day,
-    use_container_width=True
-)
+        st.plotly_chart(
+            fig_day,
+            use_container_width=True
+        )
 
         st.dataframe(
             pd.DataFrame(righe_giorno),
@@ -612,7 +612,9 @@ st.plotly_chart(
         )
 
     else:
-        st.warning("Nessun dato disponibile nel periodo selezionato.")
+        st.warning(
+            "Nessun dato disponibile nel periodo selezionato."
+        )
 # ══════════════════════════════════════════════════════════════
 # TAB 5 — TARIFFA
 # ══════════════════════════════════════════════════════════════
