@@ -162,25 +162,39 @@ with st.sidebar:
     st.markdown(f"🗂 **Progetto:** `{progetto_attivo}`")
     st.markdown("---")
 
-    # ── SEZIONE IMPORTA DATI ──
-    st.markdown("### 📥 Importa Dati")
-    st.caption("Carica un file Excel: i dati vengono accodati a quelli esistenti su Supabase.")
+# ── SEZIONE IMPORTA DATI ──
+st.markdown("### 📥 Importa Dati")
+st.caption("Carica un file Excel: i dati vengono accodati a quelli esistenti su Supabase.")
 
-    uploaded = st.file_uploader("Seleziona file Excel", type=["xlsx", "xls"])
-    if uploaded:
-        if st.button("⬆ Importa su Supabase", use_container_width=True, type="primary"):
-            with st.spinner("Lettura e importazione in corso..."):
-                try:
-                    dati_nuovi = leggi_file_corrieri(uploaded)
-                    n_righe = importa_su_supabase(dati_nuovi)
-                    st.success(f"✅ {n_righe} record importati!")
-                    st.session_state.dati = None  # forza ricaricamento dal DB
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Errore importazione: {e}")
+uploaded = st.file_uploader("Seleziona file Excel", type=["xlsx", "xls"])
 
-    st.markdown("---")
+if uploaded:
+    if st.button("⬆ Importa su Supabase", use_container_width=True, type="primary"):
+        with st.spinner("Lettura e importazione in corso..."):
+            try:
+                dati_nuovi = leggi_file_corrieri(uploaded)
+                n_righe = importa_su_supabase(dati_nuovi)
+                st.success(f"✅ {n_righe} record importati!")
+                st.session_state.dati = None
+                st.rerun()
 
+            except Exception as e:
+                st.error(f"Errore importazione: {e}")
+
+st.markdown("---")
+
+st.markdown("## 📊 Navigazione KPI")
+
+st.markdown(
+    """
+    - [📦 KPI Consegne](#kpi-consegne)
+    - [🚚 KPI Ritiri](#kpi-ritiri)
+    - [⭐ KPI NPS](#kpi-nps)
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown("---")
     # ── CARICA DATI DA SUPABASE ──
     if st.session_state.dati is None:
         with st.spinner("Caricamento dati da Supabase..."):
@@ -521,7 +535,12 @@ with tab4:
 
         # KPI CONSEGNE
 
-        st.markdown("## 📦 KPI CONSEGNE")
+        st.markdown(
+            '<a id="kpi-consegne"></a>',
+            unsafe_allow_html=True
+        )
+        
+        st.markdown("## 📦 KPI CONSEGNE"))
 
         c1,c2,c3,c4,c5 = st.columns(5)
 
@@ -670,8 +689,12 @@ with tab4:
 
         # KPI RITIRI
 
+        st.markdown(
+            '<a id="kpi-ritiri"></a>',
+            unsafe_allow_html=True
+        )
+        
         st.markdown("## 🚚 KPI RITIRI")
-
         c1,c2,c3 = st.columns(3)
 
         with c1:
@@ -699,6 +722,11 @@ with tab4:
 
         # KPI NPS
 
+        st.markdown(
+            '<a id="kpi-nps"></a>',
+            unsafe_allow_html=True
+        )
+        
         st.markdown("## ⭐ KPI NPS")
 
         st.info(
