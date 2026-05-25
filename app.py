@@ -482,7 +482,7 @@ with tab4:
 
         rdc = (lv_ok_g / lv_af_g * 100) if lv_af_g > 0 else 0
 
-       tab_cons, tab_rit, tab_nps = st.tabs([
+        tab_cons, tab_rit, tab_nps = st.tabs([
 
     "📦 KPI CONSEGNE",
     "🚚 KPI RITIRI",
