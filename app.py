@@ -520,40 +520,90 @@ with tab4:
                 "Produttività (LV OK + RIT)": int(v.get("ldv_tot",0)),
             })
 
-        st.markdown("#### LV Ok e LV Ritiro per Giro")
+        st.markdown("#### Classifica RDC per Giro")
 
-        fig_day = go.Figure()
+righe_rdc=[]
 
-        fig_day.add_trace(go.Bar(
-            y=[f"Giro {r['Giro']}" for r in righe_giorno],
-            x=[r["LV OK"] for r in righe_giorno],
-            name="LV Ok",
-            orientation="h",
-            marker_color="#22c55e",
-        ))
+for g, v in giri_day.items():
 
-        fig_day.add_trace(go.Bar(
-            y=[f"Giro {r['Giro']}" for r in righe_giorno],
-            x=[r["LV RIT"] for r in righe_giorno],
-            name="LV Rit",
-            orientation="h",
-            marker_color="#a855f7",
-        ))
+    lv_af = int(v.get("lv_af",0))
+    lv_ok = int(v.get("lv_ok",0))
 
-        fig_day.update_layout(
-            **LAYOUT_DARK,
-            barmode="stack",
-            height=max(250, len(righe_giorno)*30),
-            yaxis=dict(
-                gridcolor="#2a3045",
-                autorange="reversed"
-            ),
-            xaxis=dict(
-                gridcolor="#2a3045"
-            )
-        )
+    rdc_giro = (
+        (lv_ok / lv_af) * 100
+        if lv_af > 0
+        else 0
+    )
 
-        st.plotly_chart(fig_day, use_container_width=True)
+    righe_rdc.append({
+
+        "Giro":g,
+        "RDC":rdc_giro
+
+    })
+
+df_rdc = pd.DataFrame(righe_rdc)
+
+df_rdc = df_rdc.sort_values(
+    by="RDC",
+    ascending=False
+)
+
+fig_day = go.Figure()
+
+fig_day.add_trace(
+
+    go.Bar(
+
+        y=[
+            f"Giro {g}"
+            for g in df_rdc["Giro"]
+        ],
+
+        x=df_rdc["RDC"],
+
+        orientation="h",
+
+        text=[
+            f"{x:.1f}%"
+            for x in df_rdc["RDC"]
+        ],
+
+        textposition="outside",
+
+        marker_color=df_rdc["RDC"],
+
+        marker_colorscale="RdYlGn"
+
+    )
+
+)
+
+fig_day.update_layout(
+
+    **LAYOUT_DARK,
+
+    height=max(
+        250,
+        len(df_rdc)*30
+    ),
+
+    xaxis=dict(
+        title="RDC %",
+        range=[0,100],
+        gridcolor="#2a3045"
+    ),
+
+    yaxis=dict(
+        autorange="reversed"
+    )
+
+)
+
+st.plotly_chart(
+    fig_day,
+    use_container_width=True
+)
 
         st.dataframe(
             pd.DataFrame(righe_giorno),
