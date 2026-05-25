@@ -181,31 +181,29 @@ if uploaded:
             except Exception as e:
                 st.error(f"Errore importazione: {e}")
 
-st.markdown("---")
 
-st.markdown("## 📊 Navigazione KPI")
-
-st.markdown(
-    """
-    - [📦 KPI Consegne](#kpi-consegne)
-    - [🚚 KPI Ritiri](#kpi-ritiri)
-    - [⭐ KPI NPS](#kpi-nps)
-    """,
-    unsafe_allow_html=True
-)
 
 st.markdown("---")
-    # ── CARICA DATI DA SUPABASE ──
-    if st.session_state.dati is None:
-        with st.spinner("Caricamento dati da Supabase..."):
-            try:
-                st.session_state.dati = carica_da_supabase()
-                if st.session_state.dati:
-                    st.success(f"✅ {len(st.session_state.dati)} filiali caricate")
-                else:
-                    st.warning("Nessun dato presente. Importa un file Excel.")
-            except Exception as e:
-                st.error(f"Errore connessione Supabase: {e}")
+
+# ── CARICA DATI DA SUPABASE ──
+if st.session_state.dati is None:
+    with st.spinner("Caricamento dati da Supabase..."):
+        try:
+            st.session_state.dati = carica_da_supabase()
+
+            if st.session_state.dati:
+                st.success(
+                    f"✅ {len(st.session_state.dati)} filiali caricate"
+                )
+            else:
+                st.warning(
+                    "Nessun dato presente. Importa un file Excel."
+                )
+
+        except Exception as e:
+            st.error(
+                f"Errore connessione Supabase: {e}"
+            )
 
     if st.button("🔄 Ricarica da Supabase", use_container_width=True):
         st.session_state.dati = None
