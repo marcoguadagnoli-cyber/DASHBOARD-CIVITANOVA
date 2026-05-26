@@ -184,29 +184,57 @@ with st.sidebar:
     )
 
     st.markdown("---")
-# ── SEZIONE IMPORTA DATI ──
-st.markdown("### 📥 Importa Dati")
-st.caption("Carica un file Excel: i dati vengono accodati a quelli esistenti su Supabase.")
 
-uploaded = st.file_uploader("Seleziona file Excel", type=["xlsx", "xls"])
+    # ── SEZIONE IMPORTA DATI ──
 
-if uploaded:
-    if st.button("⬆ Importa su Supabase", use_container_width=True, type="primary"):
-        with st.spinner("Lettura e importazione in corso..."):
-            try:
-                dati_nuovi = leggi_file_corrieri(uploaded)
-                n_righe = importa_su_supabase(dati_nuovi)
-                st.success(f"✅ {n_righe} record importati!")
-                st.session_state.dati = None
-                st.rerun()
+    st.markdown("### 📥 Importa Dati")
 
-            except Exception as e:
-                st.error(f"Errore importazione: {e}")
+    st.caption(
+        "Carica un file Excel: i dati vengono accodati a quelli esistenti su Supabase."
+    )
 
+    uploaded = st.file_uploader(
+        "Seleziona file Excel",
+        type=["xlsx","xls"]
+    )
 
+    if uploaded:
 
-st.markdown("---")
+        if st.button(
+            "⬆ Importa su Supabase",
+            use_container_width=True,
+            type="primary"
+        ):
 
+            with st.spinner(
+                "Lettura e importazione in corso..."
+            ):
+
+                try:
+
+                    dati_nuovi = leggi_file_corrieri(
+                        uploaded
+                    )
+
+                    n_righe = importa_su_supabase(
+                        dati_nuovi
+                    )
+
+                    st.success(
+                        f"✅ {n_righe} record importati!"
+                    )
+
+                    st.session_state.dati = None
+
+                    st.rerun()
+
+                except Exception as e:
+
+                    st.error(
+                        f"Errore importazione: {e}"
+                    )
+
+    st.markdown("---")
 # ── CARICA DATI DA SUPABASE ──
 if st.session_state.dati is None:
     with st.spinner("Caricamento dati da Supabase..."):
