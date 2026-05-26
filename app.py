@@ -335,6 +335,12 @@ rdc_medio = (
     else 0
 )
 
+prod_complessiva_media = (
+    (tot_ok + tot_rit) / tot_giri_giorni
+    if tot_giri_giorni > 0
+    else 0
+)
+
 c1, c2, c3, c4, c5 = st.columns(5)
 
 with c1:
@@ -373,7 +379,6 @@ with c5:
     )
 
 st.markdown("---")
-
         st.markdown("### 📅 Periodo Analisi")
 
         c1, c2, c3, c4 = st.columns([2,2,1,1])
