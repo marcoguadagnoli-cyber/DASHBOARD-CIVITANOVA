@@ -310,9 +310,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # TAB 1 — PANORAMICA
 # ══════════════════════════════════════════════════════════════
 with tab1:
-st.markdown(
-    f"### Dettaglio Filiale {filiale_sel}"
-)
+st.markdown("### Dettaglio Filiale CX")
     riepilogo = []
     for fil in filiali:
         agg, _, _ = aggrega_filiale(dati[fil], date_da, date_a)
