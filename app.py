@@ -298,12 +298,11 @@ filiali = sorted(dati.keys())
 date_da = st.session_state.date_da
 date_a  = st.session_state.date_a
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
+tab1, tab2, tab3, tab4 = st.tabs([
     "📊 Panoramica",
-    "🏢 Dettaglio Filiale",
     "📋 Tutti i Giri",
     "📅 Giornaliero",
-    "💶 Tariffa",
+    "💰 Tariffa"
 ])
 
 # ══════════════════════════════════════════════════════════════
@@ -446,18 +445,60 @@ with tab1:
 # ══════════════════════════════════════════════════════════════
 # TAB 2 — DETTAGLIO FILIALE
 # ══════════════════════════════════════════════════════════════
-with tab2:
+if False:
+
     st.markdown("### Dettaglio Singola Filiale")
-    fil_sel = st.selectbox("Seleziona filiale", filiali, key="sel_fil")
-    agg, giornate, per_giro = aggrega_filiale(dati[fil_sel], date_da, date_a)
+
+    fil_sel = st.selectbox(
+        "Seleziona filiale",
+        filiali,
+        key="sel_fil"
+    )
+
+    agg, giornate, per_giro = aggrega_filiale(
+        dati[fil_sel],
+        date_da,
+        date_a
+    )
 
     if agg:
+
         c1, c2, c3, c4, c5 = st.columns(5)
-        with c1: kpi_card("Giorni Attivi",        str(agg["n_giorni"]),        "#94a3b8")
-        with c2: kpi_card("Tot LV Affidate",       fmt_n(agg["tot_lv_af"]),    "#3b82f6")
-        with c3: kpi_card("Tot LV Ok",             fmt_n(agg["tot_lv_ok"]),    "#22c55e")
-        with c4: kpi_card("Tot LV Rit",            fmt_n(agg["tot_lv_rit"]),   "#a855f7")
-        with c5: kpi_card("Prod. Media Corrieri",  f"{agg['media_prod']:.1f}", "#f59e0b")
+
+        with c1:
+            kpi_card(
+                "Giorni Attivi",
+                str(agg["n_giorni"]),
+                "#94a3b8"
+            )
+
+        with c2:
+            kpi_card(
+                "Tot LV Affidate",
+                fmt_n(agg["tot_lv_af"]),
+                "#3b82f6"
+            )
+
+        with c3:
+            kpi_card(
+                "Tot LV Ok",
+                fmt_n(agg["tot_lv_ok"]),
+                "#22c55e"
+            )
+
+        with c4:
+            kpi_card(
+                "Tot LV Rit",
+                fmt_n(agg["tot_lv_rit"]),
+                "#a855f7"
+            )
+
+        with c5:
+            kpi_card(
+                "Prod. Media Corrieri",
+                f"{agg['media_prod']:.1f}",
+                "#f59e0b"
+            )
 
         st.markdown("---")
 
