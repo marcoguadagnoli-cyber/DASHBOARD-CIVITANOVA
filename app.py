@@ -298,17 +298,17 @@ filiali = sorted(dati.keys())
 date_da = st.session_state.date_da
 date_a  = st.session_state.date_a
 
-tab1, tab2, tab3, tab4 = st.tabs([
+tab_pan, tab_giri, tab_giorno, tab_tar = st.tabs([
     "📊 Panoramica",
     "📋 Tutti i Giri",
-    "📅 Giornaliero",
+    "🗓 Giornaliero",
     "💰 Tariffa"
 ])
 
 # ══════════════════════════════════════════════════════════════
 # TAB 1 — PANORAMICA
 # ══════════════════════════════════════════════════════════════
-with tab1:
+with tab_pan:
 
     st.markdown("### Dettaglio Filiale CX")
     riepilogo = []
@@ -667,7 +667,7 @@ if False:
 # ══════════════════════════════════════════════════════════════
 # TAB 3 — TUTTI I GIRI
 # ══════════════════════════════════════════════════════════════
-with tab3:
+with tab_giri:
     st.markdown("### Elenco Completo Multi-Filiale di tutti i Giri")
     righe_tutti = []
     for fil in filiali:
@@ -717,7 +717,7 @@ with tab3:
 # TAB 4 — GIORNALIERO
 # ══════════════════════════════════════════════════════════════
 
-with tab4:
+with tab_giorno:
 
     st.markdown("### Dettaglio Giornaliero per Filiale")
 
@@ -922,7 +922,7 @@ with tab4:
 # ══════════════════════════════════════════════════════════════
 # TAB 5 — TARIFFA
 # ══════════════════════════════════════════════════════════════
-with tab5:
+with tab_tar:
     st.markdown("### Calcolo Fatturato a Scaglioni Progressivi")
     fil_tar = st.selectbox("Seleziona filiale per tariffazione", filiali, key="fil_tar")
     _, giornate_t, _ = aggrega_filiale(dati[fil_tar], date_da, date_a)
