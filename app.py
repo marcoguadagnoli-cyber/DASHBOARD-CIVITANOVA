@@ -448,25 +448,56 @@ for i, row in df_riep.iterrows():
         )
 
     )
-        # GRAFICO 2 — LV Ok vs LV Ritiro per filiale
-        st.markdown("#### LV Ok vs LV Ritiro per Filiale")
-        fig_lv = go.Figure()
-        fig_lv.add_trace(go.Bar(
-            name="LV Ok",
-            x=df_riep["filiale"], y=df_riep["tot_lv_ok"],
-            marker_color="#22c55e",
-            text=df_riep["tot_lv_ok"].apply(lambda v: fmt_n(v)),
-            textposition="outside",
-        ))
-        fig_lv.add_trace(go.Bar(
-            name="LV Ritiro",
-            x=df_riep["filiale"], y=df_riep["tot_lv_rit"],
-            marker_color="#a855f7",
-            text=df_riep["tot_lv_rit"].apply(lambda v: fmt_n(v)),
-            textposition="outside",
-        ))
-        fig_lv.update_layout(**LAYOUT_DARK, barmode="group", height=300, xaxis=dict(gridcolor="#2a3045"), yaxis=dict(gridcolor="#2a3045"))
-        st.plotly_chart(fig_lv, use_container_width=True)
+# GRAFICO 2 — LV Ok vs LV Ritiro per filiale
+
+st.markdown(
+    "#### LV Ok vs LV Ritiro per Filiale"
+)
+
+fig_lv = go.Figure()
+
+fig_lv.add_trace(
+    go.Bar(
+        name="LV Ok",
+        x=df_riep["filiale"],
+        y=df_riep["tot_lv_ok"],
+        marker_color="#22c55e",
+        text=df_riep["tot_lv_ok"].apply(
+            lambda v: fmt_n(v)
+        ),
+        textposition="outside"
+    )
+)
+
+fig_lv.add_trace(
+    go.Bar(
+        name="LV Ritiro",
+        x=df_riep["filiale"],
+        y=df_riep["tot_lv_rit"],
+        marker_color="#a855f7",
+        text=df_riep["tot_lv_rit"].apply(
+            lambda v: fmt_n(v)
+        ),
+        textposition="outside"
+    )
+)
+
+fig_lv.update_layout(
+    **LAYOUT_DARK,
+    barmode="group",
+    height=300,
+    xaxis=dict(
+        gridcolor="#2a3045"
+    ),
+    yaxis=dict(
+        gridcolor="#2a3045"
+    )
+)
+
+st.plotly_chart(
+    fig_lv,
+    use_container_width=True
+)
 
         # TABELLA RIEPILOGATIVA
         st.markdown("#### Tabella Riepilogativa Filiali")
