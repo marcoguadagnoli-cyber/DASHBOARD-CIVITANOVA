@@ -339,65 +339,80 @@ with tab1:
         st.markdown("---")
         st.markdown("---")
 
-st.markdown("### 📅 Periodo Analisi")
+        st.markdown("---")
 
-c1, c2, c3, c4 = st.columns([2,2,1,1])
+        st.markdown("### 📅 Periodo Analisi")
 
-with c1:
-    date_da = st.date_input(
-        "Dal",
-        value=date(2026,1,2),
-        key="pan_da"
-    )
+        c1, c2, c3, c4 = st.columns([2,2,1,1])
 
-with c2:
-    date_a = st.date_input(
-        "Al",
-        value=date.today(),
-        key="pan_a"
-    )
+        with c1:
+            date_da = st.date_input(
+                "Dal",
+                value=date(2026,1,2),
+                key="pan_da"
+            )
 
-with c3:
+        with c2:
+            date_a = st.date_input(
+                "Al",
+                value=date.today(),
+                key="pan_a"
+            )
 
-    if st.button(
-        "Oggi",
-        use_container_width=True
-    ):
+        with c3:
 
-        date_da = date.today()
-        date_a = date.today()
+            if st.button(
+                "Oggi",
+                use_container_width=True
+            ):
 
-with c4:
+                date_da = date.today()
+                date_a = date.today()
 
-    if st.button(
-        "YTD",
-        use_container_width=True
-    ):
+        with c4:
 
-        date_da = date(
-            date.today().year,
-            1,
-            1
-        )
+            if st.button(
+                "YTD",
+                use_container_width=True
+            ):
 
-        date_a = date.today()
+                date_da = date(
+                    date.today().year,
+                    1,
+                    1
+                )
 
-st.markdown("---")
+                date_a = date.today()
+
+        st.markdown("---")
 
         # GRAFICO 1 — Produttività LDV OK+RIT per filiale
-        st.markdown("#### Produttività Media Corrieri (LDV OK+RIT) per Filiale")
-        fig_prod = go.Figure()
-        for i, row in df_riep.iterrows():
-            col = colore_filiale(filiali, row["filiale"])
-            fig_prod.add_trace(go.Bar(
-                x=[row["filiale"]], y=[round(row["media_prod"], 1)],
-                marker_color=col, name=row["filiale"],
-                text=[f"{row['media_prod']:.1f}"], textposition="outside",
-                showlegend=False,
-            ))
-        fig_prod.update_layout(**LAYOUT_DARK, height=300, xaxis=dict(gridcolor="#2a3045"), yaxis=dict(gridcolor="#2a3045", title="Media Giornaliera Pezzi per Corriere"))
-        st.plotly_chart(fig_prod, use_container_width=True)
 
+        st.markdown(
+            "#### Produttività Media Corrieri (LDV OK+RIT) per Filiale"
+        )
+
+        fig_prod = go.Figure()
+
+        for i, row in df_riep.iterrows():
+
+            col = colore_filiale(
+                filiali,
+                row["filiale"]
+            )
+
+            fig_prod.add_trace(
+
+                go.Bar(
+                    x=[row["filiale"]],
+                    y=[round(row["media_prod"],1)],
+                    marker_color=col,
+                    name=row["filiale"],
+                    text=[f"{row['media_prod']:.1f}"],
+                    textposition="outside",
+                    showlegend=False
+                )
+            )
         # GRAFICO 2 — LV Ok vs LV Ritiro per filiale
         st.markdown("#### LV Ok vs LV Ritiro per Filiale")
         fig_lv = go.Figure()
