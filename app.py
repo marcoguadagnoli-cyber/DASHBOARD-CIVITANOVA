@@ -335,8 +335,6 @@ with tab1:
         with c4: kpi_card("Tot LV Ritiro",         fmt_n(tot_rit),                 "#a855f7")
         with c5: kpi_card("Prod. Media Corrieri",  f"{prod_complessiva_media:.1f}", "#f59e0b")
 
-        st.markdown("---")
-        st.markdown("---")
 
         st.markdown("---")
 
