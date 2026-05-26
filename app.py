@@ -499,15 +499,54 @@ st.plotly_chart(
     use_container_width=True
 )
 
-        # TABELLA RIEPILOGATIVA
-        st.markdown("#### Tabella Riepilogativa Filiali")
-        df_tab = df_riep[["filiale", "n_giorni", "tot_lv_af", "tot_lv_ok", "tot_lv_rit", "media_prod"]].copy()
-        df_tab.columns = ["Filiale", "Giorni Periodo", "Tot LV AF", "Tot LV Ok", "Tot LV Rit", "Prod. Media Corriere"]
-        df_tab["Tot LV AF"]  = df_tab["Tot LV AF"].apply(fmt_n)
-        df_tab["Tot LV Ok"]  = df_tab["Tot LV Ok"].apply(fmt_n)
-        df_tab["Tot LV Rit"] = df_tab["Tot LV Rit"].apply(fmt_n)
-        df_tab["Prod. Media Corriere"] = df_tab["Prod. Media Corriere"].apply(lambda x: f"{x:.1f}")
-        st.dataframe(df_tab, use_container_width=True, hide_index=True)
+# TABELLA RIEPILOGATIVA
+
+st.markdown(
+    "#### Tabella Riepilogativa Filiali"
+)
+
+df_tab = df_riep[
+    [
+        "filiale",
+        "n_giorni",
+        "tot_lv_af",
+        "tot_lv_ok",
+        "tot_lv_rit",
+        "media_prod"
+    ]
+].copy()
+
+df_tab.columns = [
+    "Filiale",
+    "Giorni Periodo",
+    "Tot LV AF",
+    "Tot LV Ok",
+    "Tot LV Rit",
+    "Prod. Media Corrieri"
+]
+
+df_tab["Tot LV AF"] = (
+    df_tab["Tot LV AF"].apply(fmt_n)
+)
+
+df_tab["Tot LV Ok"] = (
+    df_tab["Tot LV Ok"].apply(fmt_n)
+)
+
+df_tab["Tot LV Rit"] = (
+    df_tab["Tot LV Rit"].apply(fmt_n)
+)
+
+df_tab["Prod. Media Corrieri"] = (
+    df_tab["Prod. Media Corrieri"]
+    .apply(lambda x: f"{x:.1f}")
+)
+
+st.dataframe(
+    df_tab,
+    use_container_width=True,
+    hide_index=True
+)
 
 # ══════════════════════════════════════════════════════════════
 # TAB 2 — DETTAGLIO FILIALE
