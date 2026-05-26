@@ -337,6 +337,52 @@ with tab1:
         with c5: kpi_card("Prod. Media Corrieri",  f"{prod_complessiva_media:.1f}", "#f59e0b")
 
         st.markdown("---")
+        st.markdown("---")
+
+st.markdown("### 📅 Periodo Analisi")
+
+c1, c2, c3, c4 = st.columns([2,2,1,1])
+
+with c1:
+    date_da = st.date_input(
+        "Dal",
+        value=date(2026,1,2),
+        key="pan_da"
+    )
+
+with c2:
+    date_a = st.date_input(
+        "Al",
+        value=date.today(),
+        key="pan_a"
+    )
+
+with c3:
+
+    if st.button(
+        "Oggi",
+        use_container_width=True
+    ):
+
+        date_da = date.today()
+        date_a = date.today()
+
+with c4:
+
+    if st.button(
+        "YTD",
+        use_container_width=True
+    ):
+
+        date_da = date(
+            date.today().year,
+            1,
+            1
+        )
+
+        date_a = date.today()
+
+st.markdown("---")
 
         # GRAFICO 1 — Produttività LDV OK+RIT per filiale
         st.markdown("#### Produttività Media Corrieri (LDV OK+RIT) per Filiale")
