@@ -420,33 +420,34 @@ with c4:
         date_a = date.today()
 
 st.markdown("---")
-        # GRAFICO 1 — Produttività LDV OK+RIT per filiale
+# GRAFICO 1 — Produttività LDV OK+RIT per filiale
 
-        st.markdown(
-            "#### Produttività Media Corrieri (LDV OK+RIT) per Filiale"
+st.markdown(
+    "#### Produttività Media Corrieri (LDV OK+RIT) per Filiale"
+)
+
+fig_prod = go.Figure()
+
+for i, row in df_riep.iterrows():
+
+    col = colore_filiale(
+        filiali,
+        row["filiale"]
+    )
+
+    fig_prod.add_trace(
+
+        go.Bar(
+            x=[row["filiale"]],
+            y=[round(row["media_prod"],1)],
+            marker_color=col,
+            name=row["filiale"],
+            text=[f"{row['media_prod']:.1f}"],
+            textposition="outside",
+            showlegend=False
         )
 
-        fig_prod = go.Figure()
-
-        for i, row in df_riep.iterrows():
-
-            col = colore_filiale(
-                filiali,
-                row["filiale"]
-            )
-
-            fig_prod.add_trace(
-
-                go.Bar(
-                    x=[row["filiale"]],
-                    y=[round(row["media_prod"],1)],
-                    marker_color=col,
-                    name=row["filiale"],
-                    text=[f"{row['media_prod']:.1f}"],
-                    textposition="outside",
-                    showlegend=False
-                )
-            )
+    )
         # GRAFICO 2 — LV Ok vs LV Ritiro per filiale
         st.markdown("#### LV Ok vs LV Ritiro per Filiale")
         fig_lv = go.Figure()
