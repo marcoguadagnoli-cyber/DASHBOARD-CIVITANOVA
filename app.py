@@ -329,7 +329,18 @@ with tab1:
         prod_complessiva_media = (tot_ok + tot_rit) / tot_giri_giorni if tot_giri_giorni > 0 else 0.0
 
         c1, c2, c3, c4, c5 = st.columns(5)
-        with c1: kpi_card("Filiali attive",       str(len(riepilogo)),             "#3b82f6")
+rdc_medio = (
+    (tot_ok / tot_af) * 100
+    if tot_af > 0
+    else 0
+)
+
+with c1:
+    kpi_card(
+        "RDC Medio",
+        f"{rdc_medio:.1f}%",
+        "#ef4444"
+    )
         with c2: kpi_card("Tot LV Affidate",       fmt_n(tot_af),                  "#3b82f6")
         with c3: kpi_card("Tot LV Ok",             fmt_n(tot_ok),                  "#22c55e")
         with c4: kpi_card("Tot LV Ritiro",         fmt_n(tot_rit),                 "#a855f7")
