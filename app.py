@@ -335,17 +335,42 @@ rdc_medio = (
     else 0
 )
 
+c1, c2, c3, c4, c5 = st.columns(5)
+
 with c1:
     kpi_card(
         "RDC Medio",
         f"{rdc_medio:.1f}%",
         "#ef4444"
     )
-        with c2: kpi_card("Tot LV Affidate",       fmt_n(tot_af),                  "#3b82f6")
-        with c3: kpi_card("Tot LV Ok",             fmt_n(tot_ok),                  "#22c55e")
-        with c4: kpi_card("Tot LV Ritiro",         fmt_n(tot_rit),                 "#a855f7")
-        with c5: kpi_card("Prod. Media Corrieri",  f"{prod_complessiva_media:.1f}", "#f59e0b")
 
+with c2:
+    kpi_card(
+        "Tot LV Affidate",
+        fmt_n(tot_af),
+        "#3b82f6"
+    )
+
+with c3:
+    kpi_card(
+        "Tot LV Ok",
+        fmt_n(tot_ok),
+        "#22c55e"
+    )
+
+with c4:
+    kpi_card(
+        "Tot LV Ritiro",
+        fmt_n(tot_rit),
+        "#a855f7"
+    )
+
+with c5:
+    kpi_card(
+        "Prod. Media Corrieri",
+        f"{prod_complessiva_media:.1f}",
+        "#f59e0b"
+    )
 
         st.markdown("---")
 
