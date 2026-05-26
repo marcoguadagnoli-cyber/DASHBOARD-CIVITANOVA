@@ -372,7 +372,7 @@ with c5:
         "#f59e0b"
     )
 
-        st.markdown("---")
+st.markdown("---")
 
         st.markdown("### 📅 Periodo Analisi")
 
